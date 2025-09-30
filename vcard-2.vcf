@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:王;健鴻;;;
+FN:王健鴻
+ORG:Your Company
+TITLE:Assistant Engineer
+TEL;TYPE=CELL:+886980441219
+EMAIL;TYPE=INTERNET,PREF:ray0980441219@gmail.com
+URL:https://your-domain.example/card/wjh
+END:VCARD
