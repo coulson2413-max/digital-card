@@ -1,157 +1,42 @@
-<!doctype html>
-<html lang="zh-Hant" itemscope itemtype="https://schema.org/Person">
+<!DOCTYPE html>
+<html lang="zh-Hant">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>王健鴻｜數位名片</title>
-  <meta name="description" content="台積電 助理工程師。電話、Email、LINE、LinkedIn，一鍵聯絡，並可下載通訊錄。">
-
-  <!-- Open Graph / 分享卡片 -->
-  <meta property="og:title" content="王健鴻｜數位名片">
-  <meta property="og:description" content="台積電 助理工程師｜一鍵聯絡、下載 vCard。">
-  <meta property="og:image" content="/assets/og-card.png">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://digital-card-vert.vercel.app">
-
-  <!-- PWA -->
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0b0b0c">
-  <link rel="apple-touch-icon" href="/assets/icon-192.png">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>王健鴻 虛擬識別證</title>
   <style>
-    :root{
-      --bg:#f6f7f9; --card:#fff; --txt:#0b0b0c; --muted:#6b7280; --line:#e5e7eb; --accent:#0b5cff;
-      --radius:18px; --shadow:0 18px 40px rgba(0,0,0,.08);
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body {
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh; background: #f0f0f0;
     }
-    @media (prefers-color-scheme: dark){
-      :root{ --bg:#0b0b0c; --card:#15171a; --txt:#f7f8fa; --muted:#a1a1aa; --line:#2b2f34; --accent:#76a7ff; }
+    .id-card {
+      width: 90%; max-width: 400px; background: #fff;
+      border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      padding: 20px; text-align: center;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0; background:var(--bg); color:var(--txt);
-      font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      display:flex; min-height:100svh; align-items:center; justify-content:center; padding:28px;
+    .id-card img {
+      width: 100px; height: 100px; border-radius: 50%;
+      object-fit: cover; margin-bottom: 15px;
     }
-    main{
-      width:min(680px,100%); background:var(--card); border-radius:var(--radius);
-      box-shadow:var(--shadow); padding:28px; overflow:hidden;
+    .id-card h2 { font-size: 20px; margin-bottom: 5px; }
+    .id-card p { font-size: 14px; color: #555; margin: 5px 0; }
+    .btn {
+      display: block; margin: 10px auto; padding: 10px; width: 80%;
+      background: #007bff; color: white; text-decoration: none;
+      border-radius: 8px; font-weight: bold;
     }
-    header{
-      display:flex; gap:18px; align-items:center; margin-bottom:14px;
-    }
-    .avatar{
-      width:88px; height:88px; border-radius:50%;
-      background:#ddd center/cover no-repeat;
-      background-image:url('/assets/avatar.jpg'); /* 換成你的頭像 */
-      border:1px solid var(--line);
-      flex:0 0 auto;
-    }
-    h1{ margin:6px 0 2px; font-size:28px; }
-    .sub{ color:var(--muted); display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .brand{ display:flex; gap:8px; align-items:center; }
-    .brand img{ height:18px; width:auto; opacity:.9; }
-
-    .grid{
-      display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:18px 0 8px;
-    }
-    .btn{
-      display:flex; align-items:center; justify-content:center; gap:10px;
-      padding:14px 12px; border-radius:12px; text-decoration:none; color:#fff;
-      background:var(--accent); border:1px solid transparent; text-align:center; font-weight:600;
-      transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
-    }
-    .btn:hover{ transform:translateY(-1px); box-shadow:0 10px 24px rgba(11,92,255,.25); }
-    .btn.secondary{ background:transparent; color:var(--txt); border-color:var(--line); }
-    .btn.secondary:hover{ background:rgba(0,0,0,.03); }
-
-    section{ margin-top:14px; }
-    h2{ margin:0 0 8px; font-size:14px; color:var(--muted); font-weight:600; letter-spacing:.02em; }
-    .list{ display:grid; gap:10px; }
-    .item{ border:1px dashed var(--line); border-radius:12px; padding:12px; }
-
-    .footer{ margin-top:18px; font-size:12px; color:var(--muted); display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;}
-    .copy{ display:flex; gap:8px; align-items:center; }
-    .copy input{ width:220px; max-width:70vw; border:1px solid var(--line); background:transparent; color:var(--txt);
-      padding:8px 10px; border-radius:10px; }
-    .copy button{ padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:transparent; color:var(--txt); cursor:pointer; }
-    @media (max-width:560px){ .grid{ grid-template-columns:1fr; } header{ align-items:flex-start; } .copy{ width:100%; } .copy input{ flex:1; } }
-    .btn:focus, .copy button:focus, input:focus{ outline:3px solid var(--accent); outline-offset:2px; }
+    .btn:hover { background: #0056b3; }
   </style>
 </head>
 <body>
-<main role="main">
-  <!-- 頭部資訊 -->
-  <header>
-    <div class="avatar" aria-label="頭像"></div>
-    <div>
-      <h1 itemprop="name">王健鴻</h1>
-      <div class="sub">
-        <span itemprop="jobTitle">助理工程師</span>
-        <span class="brand">
-          <!-- 放公司標誌（請確認授權後使用） -->
-          <img src="/assets/company-mark.png" alt="Company">
-          <span itemprop="worksFor">台積電</span>
-        </span>
-      </div>
-    </div>
-  </header>
-
-  <!-- 快速動作 -->
-  <nav class="grid" aria-label="快速操作">
-    <a class="btn" href="tel:+886980441219" aria-label="撥打電話">📞 立即撥號</a>
-    <a class="btn" href="mailto:ray0980441219@gmail.com" aria-label="發送 Email">✉️ 寄 Email</a>
-    <a class="btn secondary" href="https://line.me/ti/p/~yourLineId" target="_blank" rel="noopener" aria-label="加入 LINE">💬 LINE</a>
-    <a class="btn secondary" href="https://www.linkedin.com/in/your-id" target="_blank" rel="noopener" aria-label="開啟 LinkedIn">in LinkedIn</a>
-    <a class="btn" href="/vcard.vcf" download aria-label="下載 vCard">👤 加入通訊錄</a>
-  </nav>
-
-  <!-- 關於 / 可自由修改 -->
-  <section>
-    <h2>關於</h2>
-    <div class="list">
-      <div class="item">前端工程、NFC／NDEF 應用、雲端服務整合。</div>
-      <div class="item">近期：電子名片系統、資料視覺化看板、內部流程自動化。</div>
-    </div>
-  </section>
-
-  <!-- 聯絡資訊（結構化資料） -->
-  <section aria-label="聯絡資訊">
-    <h2>聯絡</h2>
-    <div class="list" itemprop="contactPoint" itemscope itemtype="https://schema.org/ContactPoint">
-      <div class="item">📱 手機：<a itemprop="telephone" href="tel:+886980441219">+886 980 441 219</a></div>
-      <div class="item">📧 Email：<a itemprop="email" href="mailto:ray0980441219@gmail.com">ray0980441219@gmail.com</a></div>
-      <meta itemprop="contactType" content="customer support">
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div>© <span id="year"></span> Digital Card</div>
-
-    <!-- 複製連結 -->
-    <div class="copy">
-      <input id="link" value="https://digital-card-vert.vercel.app" readonly aria-label="名片連結">
-      <button id="copyBtn" type="button">複製連結</button>
-    </div>
-  </footer>
-</main>
-
-<script>
-  // PWA Service Worker
-  if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }
-
-  // 年份
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // 複製連結
-  const copyBtn = document.getElementById('copyBtn');
-  copyBtn?.addEventListener('click', async () => {
-    try {
-      const val = document.getElementById('link').value;
-      await navigator.clipboard.writeText(val);
-      copyBtn.textContent = '已複製！';
-      setTimeout(() => copyBtn.textContent = '複製連結', 1600);
-    } catch (_) { /* 靜默失敗 */ }
-  });
-</script>
+  <div class="id-card">
+    <img src="me.jpg" alt="profile">
+    <h2>王健鴻</h2>
+    <p>台積電 助理工程師</p>
+    <p>📞 0980-441-219</p>
+    <p>✉️ ray0980441219@gmail.com</p>
+    <a href="vcard.vcf" class="btn">加入通訊錄</a>
+  </div>
 </body>
 </html>
