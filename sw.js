@@ -1,37 +1,46 @@
-// 極簡版快取：首頁與必要資源
-const CACHE = 'card-cache-v1';
+const CACHE_STATIC = 'digital-card-static-v3';
 const ASSETS = [
-  '/',            // 部署在子路徑時可改成 '/index.html'
-  '/index.html',
   '/manifest.json',
-  '/vcard.vcf'
+  '/vcard.vcf',
+  '/assets/avatar.jpg',        // 有圖就保留，沒有可以刪
+  '/assets/company-mark.png'   // 同上
 ];
 
-self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+// 安裝：預快取靜態資源
+self.addEventListener('install', e => {
+  self.skipWaiting();
+  e.waitUntil(caches.open(CACHE_STATIC).then(c => c.addAll(ASSETS)));
 });
 
-self.addEventListener('activate', event => {
-  event.waitUntil(
+// 啟用：清掉舊版快取
+self.addEventListener('activate', e => {
+  e.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    )
+      Promise.all(keys.map(k => (k !== CACHE_STATIC ? caches.delete(k) : null)))
+    ).then(() => self.clients.claim())
   );
 });
 
-self.addEventListener('fetch', event => {
-  const req = event.request;
-  event.respondWith(
-    caches.match(req).then(cached =>
-      cached ||
-      fetch(req).then(res => {
-        // 靜態資源才快取（避免把 POST 或第三方 API 亂塞入）
-        if (req.method === 'GET' && new URL(req.url).origin === location.origin) {
+// 取得：HTML 走「網路優先」，其他檔案走「快取優先」
+self.addEventListener('fetch', e => {
+  const req = e.request;
+  const isHTML = req.headers.get('accept')?.includes('text/html');
+
+  if (isHTML) {
+    // 先網路，失敗才回快取（避免舊頁面）
+    e.respondWith(
+      fetch(req)
+        .then(res => {
           const copy = res.clone();
-          caches.open(CACHE).then(c => c.put(req, copy));
-        }
-        return res;
-      }).catch(() => caches.match('/index.html'))
-    )
-  );
+          caches.open(CACHE_STATIC).then(c => c.put(req, copy));
+          return res;
+        })
+        .catch(() => caches.match(req))
+    );
+  } else {
+    // 先快取，沒有再網路
+    e.respondWith(
+      caches.match(req).then(res => res || fetch(req))
+    );
+  }
 });
